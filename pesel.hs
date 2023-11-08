@@ -10,47 +10,53 @@ plec' x
     |   x == '8' = 'k'
     |   otherwise = 'm'
 
--- doInt :: Char -> Int
--- doInt x
---     |   x == '0' = 0
---     |   x == '1' = 1
---     |   x == '2' = 2
---     |   x == '3' = 3
---     |   x == '4' = 4
---     |   x == '5' = 5
---     |   x == '6' = 6
---     |   x == '7' = 7
---     |   x == '8' = 8
---     |   x == '9' = 9
-
-
 plec :: [Char] -> Char
 plec (x) = plec' (x !! 9)
--- plec (x1:x2:x3:x4:x5:x6:x7:x8:x9:x10:x11) = plec' x10
 
 rok :: [Char] -> Int
 rok (x) = (digitToInt(x !! 0))*10 + (digitToInt (x !! 1))
--- rok (x1:x2:_) = (doInt x1)*10 + doInt x2  
+
+miesiac' :: Int -> Int
+miesiac' x
+    | x >= 81 && x <= 92   =   x - 80
+    | x >= 21 && x <= 32   =   x - 20
+    | x >= 41 && x <= 52   =   x - 40
+    | x >= 61 && x <= 72   =   x - 60
+    | otherwise = x
 
 miesiac :: [Char] -> Int
-miesiac (x) = (digitToInt(x !! 2))*10 + (digitToInt (x !! 3))
--- miesiac (_:_:x3:x4:_) = (doInt x3)*10 + doInt x4
+miesiac (x) = miesiac' ((digitToInt(x !! 2))*10 + (digitToInt (x !! 3)))
 
 dzien :: [Char] -> Int
-dzien (x) = (digitToInt(x !! 4) * 10) + digitToInt x5
--- dzien (_:_:_:_:x5:x6:_) = (doInt x5)*10 + doInt x6
+dzien (x) = (digitToInt(x !! 4) * 10) + digitToInt(x !! 5)
 
 cyfraKontrolna :: [Char] -> Int
 cyfraKontrolna (x) = digitToInt (x !! 10)
 
--- obliczonaCyfraKontrolna :: [Char] -> Int
+obliczonaCyfraKontrolna' :: Int -> Int
+obliczonaCyfraKontrolna' x
+    | x == 0    = 0
+    | otherwise = 10 - x
 
--- poprawnaCyfraKontrolna :: [Char] -> Bool
+obliczonaCyfraKontrolna :: [Char] -> Int
+obliczonaCyfraKontrolna (x) = obliczonaCyfraKontrolna' ((digitToInt(x !! 0) * 1 + digitToInt(x !! 1) * 3 + digitToInt(x !! 2) * 7 + digitToInt(x !! 3) * 9 + digitToInt(x !! 4) * 1 + digitToInt(x !! 5) * 3 + digitToInt(x !! 6) * 7 + digitToInt(x !! 7) * 9 + digitToInt(x !! 8) * 1 + digitToInt(x !! 9) * 3) `mod` 10)
+
+poprawnaCyfraKontrolna :: [Char] -> Bool
+poprawnaCyfraKontrolna x
+    | obliczonaCyfraKontrolna(x) == cyfraKontrolna(x)   = True
+    | otherwise                                         = False
+
 -- poprawnaData :: [Char] -> Bool
+
+ileDni :: [Char] -> Int 
+ileDni x
+    | miesiac(x) == 2                                                               = 28
+    | miesiac(x) == 4 || miesiac(x) == 6 || miesiac(x) == 9 || miesiac(x) == 11     = 30
+    | otherwise                                                                     = 31
+
+
+
 -- poprawnyPesel :: [Char] -> Bool
-
-
-
 -- poprawnePesele :: [[Char]] -> Bool
 -- liczbyPlci :: [[Char]] -> (Int,Int)
 -- najmlodszy :: [[Char]] -> (Int,Int,Int)
