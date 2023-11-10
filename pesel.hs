@@ -44,7 +44,7 @@ obliczonaCyfraKontrolna' x
     | otherwise = 10 - x
 
 obliczonaCyfraKontrolna :: [Char] -> Int
-obliczonaCyfraKontrolna (x) = obliczonaCyfraKontrolna' ((digitToInt(x !! 0) * 1 + digitToInt(x !! 1) * 3 + digitToInt(x !! 2) * 7 + digitToInt(x !! 3) * 9 + digitToInt(x !! 4) * 1 + digitToInt(x !! 5) * 3 + digitToInt(x !! 6) * 7 + digitToInt(x !! 7) * 9 + digitToInt(x !! 8) * 1 + digitToInt(x !! 9) * 3) `mod` 10)
+obliczonaCyfraKontrolna (x) = obliczonaCyfraKontrolna' ((digitToInt(x !! 0) + digitToInt(x !! 1) * 3 + digitToInt(x !! 2) * 7 + digitToInt(x !! 3) * 9 + digitToInt(x !! 4) + digitToInt(x !! 5) * 3 + digitToInt(x !! 6) * 7 + digitToInt(x !! 7) * 9 + digitToInt(x !! 8) + digitToInt(x !! 9) * 3) `mod` 10)
 
 poprawnaCyfraKontrolna :: [Char] -> Bool
 poprawnaCyfraKontrolna x
@@ -93,47 +93,47 @@ poprawnePesele (h:t) =
         False
 
 liczbyPlci' :: [[Char]] -> Int -> Int -> (Int, Int)
-liczbyPlci' [] lk lm = (lk, lm)
-liczbyPlci' (h:t) lk lm =
+liczbyPlci' [] ileK ileM = (ileK, ileM)
+liczbyPlci' (h:t) ileK ileM =
     if plec h == 'k' then
-        liczbyPlci' t (lk+1) lm
+        liczbyPlci' t (ileK+1) ileM
     else
-        liczbyPlci' t lk (lm+1)
+        liczbyPlci' t ileK (ileM+1)
 
 liczbyPlci :: [[Char]] -> (Int,Int)
 liczbyPlci [] = (0, 0)
 liczbyPlci (x) = liczbyPlci'(x) 0 0
 
 najmlodszy' :: [[Char]] -> (Int, Int, Int) -> (Int, Int, Int)
-najmlodszy' [] (dzienZ, miesiacZ, rokZ) = (dzienZ, miesiacZ, rokZ)
-najmlodszy' (h:t) (dzienZ, miesiacZ, rokZ) = 
-    if rok(h) > rokZ then
+najmlodszy' [] (czyDzien, czyMiesiac, czyRok) = (czyDzien, czyMiesiac, czyRok)
+najmlodszy' (h:t) (czyDzien, czyMiesiac, czyRok) = 
+    if rok(h) > czyRok then
         najmlodszy' (t) (dzien (h), miesiac (h), rok (h))
     else
-        if rok(h) == rokZ && miesiac(h) > miesiacZ then
+        if rok(h) == czyRok && miesiac(h) > czyMiesiac then
             najmlodszy' (t) (dzien (h), miesiac (h), rok (h))
         else
-            if rok(h) == rokZ && miesiac(h) == miesiacZ && dzien(h) > dzienZ then
+            if rok(h) == czyRok && miesiac(h) == czyMiesiac && dzien(h) > czyDzien then
                 najmlodszy' (t) (dzien (h), miesiac (h), rok (h))
             else
-                najmlodszy' (t) (dzienZ, miesiacZ, rokZ)
+                najmlodszy' (t) (czyDzien, czyMiesiac, czyRok)
 
 najmlodszy :: [[Char]] -> (Int,Int,Int)
-najmlodszy (h:t) = najmlodszy' (t) (dzien(h),miesiac(h),rok(h))
+najmlodszy (h:t) = najmlodszy' (t) (dzien(h), miesiac(h), rok(h))
 
 najstarszy' :: [[Char]] -> (Int, Int, Int) -> (Int, Int, Int)
-najstarszy' [] (dzienZ, miesiacZ, rokZ) = (dzienZ, miesiacZ, rokZ)
-najstarszy' (h:t) (dzienZ, miesiacZ, rokZ) = 
-    if rok(h) < rokZ then
+najstarszy' [] (czyDzien, czyMiesiac, czyRok) = (czyDzien, czyMiesiac, czyRok)
+najstarszy' (h:t) (czyDzien, czyMiesiac, czyRok) = 
+    if rok(h) < czyRok then
         najstarszy' (t) (dzien (h), miesiac (h), rok (h))
     else
-        if rok(h) == rokZ && miesiac(h) < miesiacZ then
+        if rok(h) == czyRok && miesiac(h) < czyMiesiac then
             najstarszy' (t) (dzien (h), miesiac (h), rok (h))
         else
-            if rok(h) == rokZ && miesiac(h) == miesiacZ && dzien(h) < dzienZ then
+            if rok(h) == czyRok && miesiac(h) == czyMiesiac && dzien(h) < czyDzien then
                 najstarszy' (t) (dzien (h), miesiac (h), rok (h))
             else
-                najstarszy' (t) (dzienZ, miesiacZ, rokZ)
+                najstarszy' (t) (czyDzien, czyMiesiac, czyRok)
 
 najstarszy :: [[Char]] -> (Int,Int,Int)
-najstarszy (h:t) = najstarszy' (t) (dzien(h),miesiac(h),rok(h))
+najstarszy (h:t) = najstarszy' (t) (dzien(h), miesiac(h), rok(h))
